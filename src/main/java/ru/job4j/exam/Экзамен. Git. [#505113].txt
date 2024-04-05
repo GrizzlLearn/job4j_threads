@@ -1,0 +1,89 @@
+**1. Что такое индекс?**
+
+[3.2.0. Основы Git 1. Ветки](https://job4j.ru/profile/exercise/180/task-view/907)
+[Введение в Git](https://habr.com/ru/post/472600/#section0023)
+
+Промежуточное состояние, т.е. текущие изменения после git add
+посмотреть это состояние можно использую git status
+
+Удаление файлов из индекса: 
+```bash
+git restore --staged
+```
+
+Посмотреть что конкретно поменялось в файлах: git diff
+
+**2. Как добавить изменения в индекс? (git add .)**
+
+[3.2.0. Основы Git 1. Ветки](https://job4j.ru/profile/exercise/180/task-view/907)
+[Введение в Git](https://habr.com/ru/post/472600/#section0023)
+
+все изменения: git add .
+конкретные изменения: git add file
+
+
+**3. Как сделать фиксацию изменений? (git commit -m "text")**
+
+[3.2.0. Основы Git 1. Ветки](https://job4j.ru/profile/exercise/180/task-view/907)
+[Введение в Git](https://habr.com/ru/post/472600/#section0024)
+
+как правило использую несколько вариаинтов:
+- git commit -m 'text' - коммит с сообщением
+- git commit --ammend - для редактирования сообщения коммита
+- git rebase -i HEAD~цифра коммитов для объединения
+
+
+**4. Как сделать синхронизацию изменений с удаленным репозиторием? (git push origin master)**
+
+[3.2.0. Основы Git 1. Ветки](https://job4j.ru/profile/exercise/180/task-view/907)
+[Введение в Git](https://habr.com/ru/post/472600/#section0026)
+
+**5. Как синхронизироваться с удаленным репозиторием? (git pull origin master)**
+
+[Введение в Git](https://habr.com/ru/post/472600/#section0026)
+
+Принял за правило перед созданием новой ветки и перед мержем в мастер - спуливать все изменения в мастер и мержить эти изменения в свою ветку через 
+git merge master
+
+**6. Как сделать ветку?**
+
+[3.2.0. Основы Git 1. Ветки](https://job4j.ru/profile/exercise/180/task-view/907)
+[3.2.0. Основы Git 2. Ветки в IDEA](https://job4j.ru/profile/exercise/180/task-view/908)
+[Введение в Git](https://habr.com/ru/post/472600/#section0031)
+
+всегда пользуюсь git checkout -b branchName
+
+**7. Как переключиться между ветками?**
+
+[3.2.0. Основы Git 1. Ветки](https://job4j.ru/profile/exercise/180/task-view/907)
+[3.2.0. Основы Git 2. Ветки в IDEA](https://job4j.ru/profile/exercise/180/task-view/908)
+[Введение в Git](https://habr.com/ru/post/472600/#section0031)
+
+git fetch
+git checkout branchName
+
+**8. Как отменить локальные изменения?**
+
+[3.2.0. Основы Git 3.2. Откат изменений](https://job4j.ru/profile/exercise/180/task-view/910)
+[Введение в Git](https://habr.com/ru/post/472600/#section0023)
+
+**9. Расскажи о команде git reset?**
+
+[3.2.0. Основы Git 3.2. Откат изменений](https://job4j.ru/profile/exercise/180/task-view/910)
+[Введение в Git](https://habr.com/ru/post/472600/#section0023)
+
+**10. Расскажите о команде git stash**
+
+[3.2.0. Основы Git 3.4. Временное хранение. git stash.](https://job4j.ru/profile/exercise/180/task-view/912)
+[Малоизвестные Git-команды](https://habr.com/ru/company/vk/blog/318508/)(Раздел "Git staaash")
+
+**11. Расскажите о команде git cherry-pick**
+[Коммиты — это снимки, а не различия](https://habr.com/ru/company/skillfactory/blog/551848/)(Раздел "Если коммиты — это не различия, что делает git cherry-pick?")
+
+**12. Расскажите, о команде git rerere. Расскажите, как разрешаются конфликты.**
+[Введение в Git](https://habr.com/ru/post/472600/#section0033)
+
+Rerere — «reuse recorded resolution” — “повторное использование сохраненных разрешений конфликтов».
+
+смотришь на конфликт и думаешь как его разрешить:
+или оставить свой, или чужой, или вообще объединить
