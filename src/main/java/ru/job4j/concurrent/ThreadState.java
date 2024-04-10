@@ -18,15 +18,10 @@ public class ThreadState {
         System.out.println(second.getName());
         first.start();
         second.start();
-        System.out.println(first.getState());
-        System.out.println(second.getState());
-        try {
-            first.join();
-            second.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            System.out.println("work completed");
+        while (first.getState() != Thread.State.TERMINATED || second.getState() != Thread.State.TERMINATED) {
+            System.out.println("first: " + first.getState());
+            System.out.println("second: " +second.getState());
         }
+        System.out.println("work completed");
     }
 }
