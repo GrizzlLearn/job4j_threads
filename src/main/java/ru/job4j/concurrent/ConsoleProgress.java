@@ -13,12 +13,12 @@ public class ConsoleProgress implements Runnable {
     @Override
     public void run() {
         int count = 0;
+        char[] process = new char[] {'-', '\\', '|', '/'};
         while (!Thread.currentThread().isInterrupted()) {
-            char[] process = new char[] {'-', '\\', '|', '/'};
             try {
                 Thread.sleep(240);
-                if (count <= 3) {
-                    System.out.print("\r load: " + process[count++]);
+                if (count < 4) {
+                    System.out.print("\r load: " + process[count++]);1
                 } else {
                     count = 0;
                 }
