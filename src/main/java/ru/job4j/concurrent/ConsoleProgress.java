@@ -18,7 +18,7 @@ public class ConsoleProgress implements Runnable {
             try {
                 Thread.sleep(240);
                 if (count < 4) {
-                    System.out.print("\r load: " + process[count++]);1
+                    System.out.print("\r load: " + process[count++]);
                 } else {
                     count = 0;
                 }
