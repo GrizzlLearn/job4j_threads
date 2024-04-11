@@ -18,7 +18,6 @@ public class Wget implements Runnable {
     private final String dirName;
     private final String fileName;
 
-
     public Wget(String url, int speed, String dirName, String fileName) {
         this.url = url;
         this.speed = speed;
@@ -92,9 +91,9 @@ public class Wget implements Runnable {
 
         File file = new File(String.format("%s/%s", dirName, fileName));
 
-        /*if (file.exists()) {
+        if (file.exists()) {
             throw new IllegalArgumentException("You must set NOT EXIST FILE.");
-        }*/
+        }
 
         if (file.isDirectory()) {
             throw new IllegalArgumentException("You must set FILE, not DIRECTORY.");
