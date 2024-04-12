@@ -20,7 +20,7 @@ public class ConsoleProgress implements Runnable {
                 count = count < process.length ? count : 0;
                 System.out.print("\r load: " + process[count++]);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
             }
         }
     }
