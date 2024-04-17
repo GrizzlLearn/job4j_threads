@@ -42,12 +42,10 @@ public class Wget implements Runnable {
                     if (timeSpent < second) {
                         Thread.sleep(second - timeSpent);
                         System.out.println("Thread sleep");
-                        timeSpent = 0;
                     }
                 }
                 output.write(dataBuffer, 0, bytesRead);
             }
-            System.out.println("Read 512 bytes : " + timeSpent + " nano.");
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
