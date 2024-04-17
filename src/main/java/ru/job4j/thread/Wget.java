@@ -33,12 +33,17 @@ public class Wget implements Runnable {
         try (InputStream input = new URL(url).openStream();
              FileOutputStream output = new FileOutputStream(file)) {
             int bytesRead;
+            int downloadBytes = 0;
             while ((bytesRead = input.read(dataBuffer, 0, dataBuffer.length)) != -1) {
+                downloadBytes += bytesRead;
                 timeSpent = System.currentTimeMillis() - startAt;
-                if (bytesRead == speed && timeSpent < second) {
+                if (downloadBytes >= speed) {
                     System.out.println("time spent: " + timeSpent);
-                    Thread.sleep(second - timeSpent);
-                    timeSpent = 0;
+                    if (timeSpent < second) {
+                        Thread.sleep(second - timeSpent);
+                        System.out.println("Thread sleep");
+                        timeSpent = 0;
+                    }
                 }
                 output.write(dataBuffer, 0, bytesRead);
             }
