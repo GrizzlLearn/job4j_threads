@@ -44,6 +44,7 @@ public class Wget implements Runnable {
                         System.out.println("Thread sleep");
                     }
                     downloadBytes = 0;
+                    startAt = 0;
                 }
                 output.write(dataBuffer, 0, bytesRead);
             }
