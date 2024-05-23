@@ -1,5 +1,8 @@
 package ru.job4j.io;
+
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.function.Predicate;
 
 /**
  * @author dl
@@ -7,42 +10,38 @@ import java.io.*;
  */
 
 public class ParseFile {
-    private File file;
+    public final File file;
 
-    public synchronized void setFile(File file) {
+    public ParseFile(File file) {
         this.file = file;
     }
 
-    public synchronized File getFile() {
-        return file;
-    }
-
     public String getContent() throws IOException {
-        InputStream input = new FileInputStream(file);
-        String output = "";
-        int data;
-        while ((data = input.read()) > 0) {
-            output += (char) data;
-        }
-        return output;
+        return readContent(data -> true);
     }
 
     public String getContentWithoutUnicode() throws IOException {
-        InputStream input = new FileInputStream(file);
-        String output = "";
-        int data;
-        while ((data = input.read()) > 0) {
-            if (data < 0x80) {
-                output += (char) data;
+       return readContent(data -> data < 0x80);
+    }
+
+    private String readContent(Predicate<Integer> filter) throws IOException {
+        StringBuilder output = new StringBuilder();
+        try (InputStream input = new FileInputStream(file)) {
+            int data;
+            while ((data = input.read()) != -1) {
+                if (filter.test(data)) {
+                    output.append((char) data);
+                }
             }
         }
-        return output;
+        return output.toString();
     }
 
     public void saveContent(String content) throws IOException {
-        OutputStream o = new FileOutputStream(file);
-        for (int i = 0; i < content.length(); i++) {
-            o.write(content.charAt(i));
+        try (BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(
+                        new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            writer.write(content);
         }
     }
 }
