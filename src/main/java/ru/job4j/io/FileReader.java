@@ -1,18 +1,19 @@
 package ru.job4j.io;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.function.Predicate;
 
 /**
  * @author dl
- * @date 23.05.2024 20:50
+ * @date 23.05.2024 21:34
  */
+public class FileReader {
+    private final File file;
 
-public class ParseFile {
-    public final File file;
-
-    public ParseFile(File file) {
+    public FileReader(File file) {
         this.file = file;
     }
 
@@ -21,7 +22,7 @@ public class ParseFile {
     }
 
     public String getContentWithoutUnicode() throws IOException {
-       return readContent(data -> data < 0x80);
+        return readContent(data -> data < 0x80);
     }
 
     /**
@@ -45,19 +46,5 @@ public class ParseFile {
             }
         }
         return output.toString();
-    }
-
-    /**
-     * Сохраняет предоставленное содержимое в файл с использованием кодировки UTF-8.
-     *
-     * @param content строка, содержащая текст для сохранения в файл.
-     * @throws IOException если возникает ошибка ввода-вывода при записи в файл.
-     */
-    public void saveContent(String content) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(file), StandardCharsets.UTF_8))) {
-            writer.write(content);
-        }
     }
 }
