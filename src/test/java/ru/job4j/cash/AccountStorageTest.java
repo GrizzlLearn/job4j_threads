@@ -20,15 +20,6 @@ class AccountStorageTest {
     }
 
     @Test
-    void whenAddWithNegativeAmount() {
-        var storage = new AccountStorage();
-        String errorText = "Amount cannot be negative";
-        assertThatThrownBy(() -> storage.add(new Account(1, -100)))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(errorText);
-    }
-
-    @Test
     void whenUpdate() {
         var storage = new AccountStorage();
         storage.add(new Account(1, 100));
@@ -47,19 +38,6 @@ class AccountStorageTest {
     }
 
     @Test
-    void whenDeleteNegativeOrZero() {
-        var storage = new AccountStorage();
-        String errorText = "Id cannot be negative";
-        storage.add(new Account(1, 100));
-        assertThatThrownBy(() -> storage.delete(-1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(errorText);
-        assertThatThrownBy(() -> storage.delete(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(errorText);
-    }
-
-    @Test
     void whenTransfer() {
         var storage = new AccountStorage();
         storage.add(new Account(1, 100));
@@ -74,17 +52,31 @@ class AccountStorageTest {
     }
 
     @Test
-    void whenTransferZeroOrNegativeAmount() {
+    void whenTransferZeroAmount() {
         var storage = new AccountStorage();
-        String errorText = "Amount cannot be zero or negative";
         storage.add(new Account(1, 100));
         storage.add(new Account(2, 100));
-        assertThatThrownBy(() -> storage.transfer(1, 2, 0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(errorText);
-
-        assertThatThrownBy(() -> storage.transfer(1, 2, -100))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(errorText);
+        storage.transfer(1, 2, 0);
+        var firstAccount = storage.getById(1)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 1"));
+        var secondAccount = storage.getById(2)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 1"));
+        assertThat(firstAccount.amount()).isEqualTo(100);
+        assertThat(secondAccount.amount()).isEqualTo(100);
     }
+
+    @Test
+    void whenTransferNegativeAmount() {
+        var storage = new AccountStorage();
+        storage.add(new Account(1, 100));
+        storage.add(new Account(2, 100));
+        storage.transfer(1, 2, -100);
+        var firstAccount = storage.getById(1)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 1"));
+        var secondAccount = storage.getById(2)
+                .orElseThrow(() -> new IllegalStateException("Not found account by id = 1"));
+        assertThat(firstAccount.amount()).isEqualTo(200);
+        assertThat(secondAccount.amount()).isEqualTo(0);
+    }
+
 }

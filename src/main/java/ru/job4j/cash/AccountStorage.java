@@ -16,55 +16,32 @@ public class AccountStorage {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-        if (account.amount() < 0) {
-            throw new IllegalArgumentException("Amount cannot be negative");
-        }
         return this.accounts.putIfAbsent(account.id(), account) == null;
     }
 
     public synchronized boolean update(Account account) {
-        boolean result = false;
-        if (getById(account.id()).isPresent()) {
-            this.accounts.replace(account.id(), account);
-            result = true;
-        }
-        return result;
+        return getById(account.id())
+                .map(existingAccount -> this.accounts.replace(account.id(), account) != null)
+                .orElse(false);
     }
 
     public synchronized void delete(int id) {
-        if (id < 1) {
-            throw new IllegalArgumentException("Id cannot be negative");
-        }
-
-        Optional<Account> tmp = getById(id);
-        tmp.ifPresent(account -> accounts.remove(account.id()));
+        getById(id).ifPresent(account -> this.accounts.remove(account.id()));
     }
 
     public synchronized Optional<Account> getById(int id) {
-        if (id < 1) {
-            throw new IllegalArgumentException("Id cannot be negative");
-        }
-
-        return accounts.containsKey(id)
-                ? Optional.of(accounts.get(id))
-                : Optional.empty();
+        return Optional.ofNullable(this.accounts.get(id));
     }
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
-        if (fromId < 1 || toId < 1) {
-            throw new IllegalArgumentException("Id cannot be negative");
-        }
-
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount cannot be zero or negative");
-        }
-
         boolean result = false;
-        if (getById(fromId).isPresent()
-                && getById(toId).isPresent()
+        Optional<Account> fromIdAcc = getById(fromId);
+        Optional<Account> toIdAcc = getById(toId);
+        if (fromIdAcc.isPresent()
+                && toIdAcc.isPresent()
                 && accounts.get(fromId).amount() >= amount) {
-                    accounts.put(fromId, accounts.get(fromId).changeAmount(false, amount));
-                    accounts.put(toId, accounts.get(toId).changeAmount(true, amount));
+                    this.accounts.put(fromIdAcc.get().id(), new Account(fromIdAcc.get().id(), fromIdAcc.get().amount() - amount));
+                    this.accounts.put(toIdAcc.get().id(), new Account(toIdAcc.get().id(), toIdAcc.get().amount() + amount));
                     result = true;
         }
         return result;
