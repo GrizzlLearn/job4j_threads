@@ -37,18 +37,7 @@ public class SingleLockList<T> implements Iterable<T> {
     }
 
     private synchronized List<T> copy(List<T> origin) {
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bos);
-            oos.writeObject(origin);
-            oos.flush();
-            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-            ObjectInputStream ois = new ObjectInputStream(bis);
-            return (ArrayList<T>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            LOGGER.error("Error during deep copy", e);
-            return null;
-        }
+        return new ArrayList<>(origin);
     }
 }
 
